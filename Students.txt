@@ -1,0 +1,6 @@
+ID    Name            RollNo     Marks     
+12    parth           48         78.00     
+19    Sujal           33         56.00     
+23    gandhar         54         45.00     
+49    Nik             1          41.00     
+42    Billy           98         32.00     
