@@ -11,6 +11,7 @@ public class Main {
         int choice;
 
         do {
+            System.out.println("\n");
             System.out.println("      STUDENT MANAGEMENT SYSTEM       ");
             System.out.println("1.Add Student :");
             System.out.println("2.Display :");

@@ -19,24 +19,32 @@ public class FileHandle {
         ois.close();
         return list;
     }
-    void search() throws Exception
-    {
+    void search() throws Exception {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter ID to search : ");
-        int id = sc.nextInt();
-        ArrayList<students>list=read();
+
+        int id;
+        while (true) {
+            try {
+                System.out.println("Enter ID to search : ");
+                id = sc.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid ID!");
+            }
+        }
+
+        ArrayList<students> list = read();
 
         boolean found = false;
 
-        for(students s : list)
-        {
-            if(s.studentid==id)
-            {
+        for (students s : list) {
+            if (s.studentid == id) {
                 System.out.println(s);
-                found=true;
+                found = true;
             }
         }
-        if(!found){
+
+        if (!found) {
             System.out.println("Student not found");
         }
     }
@@ -71,46 +79,79 @@ public class FileHandle {
         bw.close();
         System.out.println("Data Exported");
     }
-    void addStudent()throws Exception{
+    void addStudent() throws Exception {
         Scanner sc = new Scanner(System.in);
-        ArrayList<students>list;
+        ArrayList<students> list;
 
-        try
-        {
-            list=read();
-        }
-        catch (Exception e)
-        {
+        try {
+            list = read();
+        } catch (Exception e) {
             list = new ArrayList<>();
         }
-        System.out.println("Enter student ID :");
-        int id = sc.nextInt();
 
-        for(students s : list)
-        {
-            if(s.studentid==id)
-            {
-                System.out.println("ID Already Exists");
+        int id;
+        while (true) {
+            try {
+                System.out.println("Enter student ID :");
+                id = sc.nextInt();
+
+                boolean exists = false;
+                for (students s : list) {
+                    if (s.studentid == id) {
+                        System.out.println("ID Already Exists");
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) break;
+
+            } catch (Exception e) {
+                System.out.println("Invalid ID! Enter a number.");
             }
-
         }
 
-        System.out.println("Enter Name :");
-        String name = sc.next();
-        System.out.println("Enter Roll no :");
-        int rollno = sc.nextInt();
-        System.out.println("Enter marks :");
-        double marks = sc.nextDouble();
+        String name;
+        while (true) {
+            System.out.println("Enter Name :");
+            name = sc.nextLine().trim();
 
-        if(marks < 0 || marks >100 )
-        {
-            System.out.println("Invalid marks ");
+            if (name.isEmpty()) {
+                System.out.println("Name cannot be empty");
+            } else {
+                break;
+            }
         }
 
-        list.add(new students(id,name,rollno,marks));
+        int rollno;
+        while (true) {
+            try {
+                System.out.println("Enter Roll no :");
+                rollno = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid roll number!");
+            }
+        }
+
+        double marks;
+        while (true) {
+            try {
+                System.out.println("Enter marks :");
+                marks = Double.parseDouble(sc.nextLine());
+
+                if (marks < 0 || marks > 100) {
+                    System.out.println("Marks must be between 0 and 100");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid marks!");
+            }
+        }
+
+        list.add(new students(id, name, rollno, marks));
         write(list);
         System.out.println("Student added");
-
     }
     void display()throws Exception{
             ArrayList<students>list = read();
@@ -128,65 +169,90 @@ public class FileHandle {
                             s.studentid, s.name, s.Roll_no, s.marks);
             }
     }
-    void update()throws Exception{
+    void update() throws Exception {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter which ID to update :");
-        int id = sc.nextInt();
 
-        ArrayList<students>list=read();
+        int id;
+        while (true) {
+            try {
+                System.out.println("Enter which ID to update :");
+                id = Integer.parseInt(sc.nextLine());
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid ID!");
+            }
+        }
+
+        ArrayList<students> list = read();
         boolean found = false;
 
+        for (students s : list) {
+            if (s.studentid == id) {
 
-        for(students s : list) {
-
-            if(s.studentid==id) {
                 System.out.println("Enter new name :");
+                s.name = sc.nextLine();
 
-                s.name = sc.next();
-                System.out.println("Enter new marks :");
-                s.marks = sc.nextDouble();
-                found= true;
+                while (true) {
+                    try {
+                        System.out.println("Enter new marks :");
+                        double m = sc.nextDouble();
+
+                        if (m < 0 || m > 100) {
+                            System.out.println("Marks must be 0-100");
+                        } else {
+                            s.marks = m;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid marks!");
+                    }
+                }
+
+                found = true;
                 break;
             }
-
         }
-        if(found)
-        {
+
+        if (found) {
             write(list);
             System.out.println("List updated");
-        }
-        else {
+        } else {
             System.out.println("student not found");
         }
-
     }
-    void delete()throws Exception{
+    void delete() throws Exception {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter student id :");
-        int id = sc.nextInt();
 
-        ArrayList<students>list=read();
+        int id;
+        while (true) {
+            try {
+                System.out.println("Enter student id :");
+                id = sc.nextInt();
+                break;
+            } catch (Exception e) {
+                System.out.println("Invalid ID!");
+            }
+        }
 
-        boolean removed=false;
+        ArrayList<students> list = read();
 
-        Iterator<students> it=list.iterator();
+        boolean removed = false;
 
-        while(it.hasNext())
-        {
-            students s= it.next();
-            if(s.studentid==id)
-            {
+        Iterator<students> it = list.iterator();
+
+        while (it.hasNext()) {
+            students s = it.next();
+            if (s.studentid == id) {
                 it.remove();
-                removed=true;
+                removed = true;
                 break;
             }
         }
-        if(removed)
-        {
+
+        if (removed) {
             write(list);
             System.out.println("Data deleted");
-        }
-        else {
+        } else {
             System.out.println("Not found");
         }
     }
